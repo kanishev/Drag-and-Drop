@@ -11,7 +11,7 @@ function Autobind(target: any, propertyKey: string, descriptor: PropertyDescript
 class ProjectInput {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
-  element: HTMLElement;
+  element: HTMLFormElement;
 
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
@@ -29,12 +29,9 @@ class ProjectInput {
     this.descriptionInputElement = this.element.querySelector("#description") as HTMLInputElement;
     this.peopleCountInputElement = this.element.querySelector("#people") as HTMLInputElement;
 
-    this.initNodes();
     this.attach();
     this.configure();
   }
-
-  private initNodes() {}
 
   private gatherUserInput(): [string, string, number] | void {
     const title = this.titleInputElement.value;
@@ -56,7 +53,12 @@ class ProjectInput {
     if (Array.isArray(userInput)) {
       const [title, description, peopleCount] = userInput;
       console.log(title, description, peopleCount);
+      this.resetFormState();
     }
+  }
+
+  private resetFormState() {
+    this.element.reset();
   }
 
   private configure() {
