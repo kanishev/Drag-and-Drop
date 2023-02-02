@@ -36,9 +36,27 @@ class ProjectInput {
 
   private initNodes() {}
 
+  private gatherUserInput(): [string, string, number] | void {
+    const title = this.titleInputElement.value;
+    const descrption = this.descriptionInputElement.value;
+    const peopleCount = this.peopleCountInputElement.value;
+
+    if (title.trim().length === 0 || descrption.trim().length === 0 || peopleCount.trim().length === 0) {
+      alert("Invalid inputs");
+      return;
+    } else {
+      return [title, descrption, +peopleCount];
+    }
+  }
+
   @Autobind
   private submitHandler(e: Event) {
     e.preventDefault();
+    const userInput = this.gatherUserInput();
+    if (Array.isArray(userInput)) {
+      const [title, description, peopleCount] = userInput;
+      console.log(title, description, peopleCount);
+    }
   }
 
   private configure() {
