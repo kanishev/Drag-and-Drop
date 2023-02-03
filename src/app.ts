@@ -43,12 +43,24 @@ function Autobind(target: any, propertyKey: string, descriptor: PropertyDescript
   return adjDescriptor;
 }
 
-class ProjectList {
+abstract class Project {
+  abstract templateElement: HTMLTemplateElement;
+  abstract hostElement: HTMLElement;
+  abstract element: HTMLElement;
+
+  constructor() {}
+
+  abstract attach(): void;
+  abstract configure(): void;
+}
+
+class ProjectList extends Project {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
 
   constructor(private type: "active" | "finished") {
+    super();
     this.templateElement = document.getElementById("project-list")! as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
 
@@ -60,18 +72,18 @@ class ProjectList {
     this.configure();
   }
 
-  private attach() {
+  attach() {
     this.hostElement.insertAdjacentElement("beforeend", this.element);
   }
 
-  private configure() {
+  configure() {
     const listId = `${this.type}-project-list`;
     this.element.querySelector("ul")!.id = listId;
     this.element.querySelector("h2")!.textContent = this.type.toUpperCase() + " PROJECTS";
   }
 }
 
-class ProjectInput {
+class ProjectInput extends Project {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLFormElement;
@@ -81,6 +93,7 @@ class ProjectInput {
   peopleCountInputElement: HTMLInputElement;
 
   constructor() {
+    super();
     this.templateElement = document.getElementById("project-input")! as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
 
@@ -143,11 +156,11 @@ class ProjectInput {
     this.element.reset();
   }
 
-  private configure() {
+  configure() {
     this.element.addEventListener("submit", this.submitHandler);
   }
 
-  private attach() {
+  attach() {
     this.hostElement.insertAdjacentElement("afterbegin", this.element);
   }
 }
