@@ -54,22 +54,74 @@ abstract class Project {
   abstract configure(): void;
 }
 
+class ProjetStore {
+  private projects: any[] = [];
+  private listeners: any[] = [];
+  private static instance: ProjetStore;
+
+  addProject(title: string, description: string, people: number) {
+    const project = {
+      id: Math.random.toString(),
+      title: title,
+      description: description,
+      people: people,
+    };
+
+    this.projects.push(project);
+
+    for (const listener of this.listeners) {
+      listener(this.projects.slice());
+    }
+  }
+
+  addListener(listener: Function) {
+    this.listeners.push(listener);
+  }
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new ProjetStore();
+    return this.instance;
+  }
+}
+
+let projectState = ProjetStore.getInstance();
+
 class ProjectList extends Project {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
+  assignedProjects: any[];
 
   constructor(private type: "active" | "finished") {
     super();
     this.templateElement = document.getElementById("project-list")! as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
+    this.assignedProjects = [];
 
     const importedElement = document.importNode(this.templateElement.content, true);
     this.element = importedElement.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`;
 
+    projectState.addListener((projects: any[]) => {
+      this.assignedProjects = projects;
+      this.renderProjects();
+    });
+
     this.attach();
     this.configure();
+  }
+
+  private renderProjects() {
+    const listItem = document.getElementById(`${this.type}-projects`)! as HTMLUListElement;
+
+    for (const prjItem of this.assignedProjects) {
+      const item = document.createElement("li");
+      item.textContent = prjItem.title;
+      listItem.append(item);
+    }
   }
 
   attach() {
@@ -147,7 +199,7 @@ class ProjectInput extends Project {
     const userInput = this.gatherUserInput();
     if (Array.isArray(userInput)) {
       const [title, description, peopleCount] = userInput;
-      console.log(title, description, peopleCount);
+      projectState.addProject(title, description, peopleCount);
       this.resetFormState();
     }
   }
