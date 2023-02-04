@@ -1,47 +1,5 @@
-interface Validatable {
-  value: string;
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  min?: number;
-  max?: number;
-}
-
-function validate({ value, required, minLength, maxLength, min, max }: Validatable): boolean {
-  let isValid = true;
-
-  if (required) {
-    isValid = isValid && value.trim().length > 0;
-  }
-
-  if (minLength) {
-    isValid = isValid && value.length >= minLength;
-  }
-
-  if (maxLength) {
-    isValid = isValid && validate.length <= maxLength;
-  }
-
-  if (min != null) {
-    isValid = isValid && +value >= min;
-  }
-
-  if (max != null) {
-    isValid = isValid && +value <= max;
-  }
-
-  return isValid;
-}
-
-function Autobind(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  const adjDescriptor: PropertyDescriptor = {
-    get() {
-      return descriptor.value.bind(this);
-    },
-  };
-
-  return adjDescriptor;
-}
+import { validate } from "./utils.js";
+import { Autobind } from "./decorators.js";
 
 abstract class Project {
   abstract templateElement: HTMLTemplateElement;
