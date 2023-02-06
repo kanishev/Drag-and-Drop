@@ -1,7 +1,22 @@
 import { validate } from "./utils.js";
 import { Autobind } from "./decorators.js";
 
-abstract class Project {
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
+abstract class ProjectBase {
   abstract templateElement: HTMLTemplateElement;
   abstract hostElement: HTMLElement;
   abstract element: HTMLElement;
@@ -13,18 +28,12 @@ abstract class Project {
 }
 
 class ProjetStore {
-  private projects: any[] = [];
+  private projects: Project[] = [];
   private listeners: any[] = [];
   private static instance: ProjetStore;
 
   addProject(title: string, description: string, people: number) {
-    const project = {
-      id: Math.random.toString(),
-      title: title,
-      description: description,
-      people: people,
-    };
-
+    const project = new Project(Math.random.toString(), title, description, people, ProjectStatus.Active);
     this.projects.push(project);
 
     for (const listener of this.listeners) {
@@ -47,7 +56,7 @@ class ProjetStore {
 
 let projectState = ProjetStore.getInstance();
 
-class ProjectList extends Project {
+class ProjectList extends ProjectBase {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
@@ -93,7 +102,7 @@ class ProjectList extends Project {
   }
 }
 
-class ProjectInput extends Project {
+class ProjectInput extends ProjectBase {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLFormElement;
