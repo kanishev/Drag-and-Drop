@@ -6,6 +6,8 @@ enum ProjectStatus {
   Finished,
 }
 
+type Listener = (projects: Project[]) => void;
+
 class Project {
   constructor(
     public id: string,
@@ -29,7 +31,7 @@ abstract class ProjectBase {
 
 class ProjetStore {
   private projects: Project[] = [];
-  private listeners: any[] = [];
+  private listeners: Listener[] = [];
   private static instance: ProjetStore;
 
   addProject(title: string, description: string, people: number) {
@@ -41,7 +43,7 @@ class ProjetStore {
     }
   }
 
-  addListener(listener: Function) {
+  addListener(listener: Listener) {
     this.listeners.push(listener);
   }
 
