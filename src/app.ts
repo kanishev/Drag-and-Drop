@@ -84,8 +84,8 @@ class ProjectList extends ProjectBase {
   }
 
   private renderProjects() {
-    const listItem = document.getElementById(`${this.type}-projects`)! as HTMLUListElement;
-
+    const listItem = document.getElementById(`${this.type}-project-list`)! as HTMLUListElement;
+    listItem.innerHTML = "";
     for (const prjItem of this.assignedProjects) {
       const item = document.createElement("li");
       item.textContent = prjItem.title;
