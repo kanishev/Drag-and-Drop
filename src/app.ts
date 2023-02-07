@@ -2,8 +2,8 @@ import { validate } from "./utils.js";
 import { Autobind } from "./decorators.js";
 
 enum ProjectStatus {
-  Active,
-  Finished,
+  Active = "active",
+  Finished = "finished",
 }
 
 type Listener = (projects: Project[]) => void;
@@ -75,7 +75,7 @@ class ProjectList extends ProjectBase {
     this.element.id = `${this.type}-projects`;
 
     projectState.addListener((projects: any[]) => {
-      this.assignedProjects = projects;
+      this.assignedProjects = projects.filter((project) => project.status == this.type);
       this.renderProjects();
     });
 
