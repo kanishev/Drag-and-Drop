@@ -6,8 +6,6 @@ enum ProjectStatus {
   Finished = "finished",
 }
 
-type Listener = (projects: Project[]) => void;
-
 class Project {
   constructor(
     public id: string,
@@ -44,9 +42,18 @@ abstract class ProjectBase<T extends HTMLElement, U extends HTMLElement> {
   abstract configure(): void;
 }
 
-class ProjetStore {
+type Listener = (projects: Project[]) => void;
+
+class StoreBase {
+  protected listeners: Listener[] = [];
+
+  addListener(listener: Listener) {
+    this.listeners.push(listener);
+  }
+}
+
+class ProjetStore extends StoreBase {
   private projects: Project[] = [];
-  private listeners: Listener[] = [];
   private static instance: ProjetStore;
 
   addProject(title: string, description: string, people: number) {
@@ -56,10 +63,6 @@ class ProjetStore {
     for (const listener of this.listeners) {
       listener(this.projects.slice());
     }
-  }
-
-  addListener(listener: Listener) {
-    this.listeners.push(listener);
   }
 
   static getInstance() {
