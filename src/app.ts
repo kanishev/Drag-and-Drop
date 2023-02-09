@@ -42,12 +42,12 @@ abstract class ProjectBase<T extends HTMLElement, U extends HTMLElement> {
   abstract configure(): void;
 }
 
-type Listener = (projects: Project[]) => void;
+type Listener<T> = (projects: T[]) => void;
 
 class StoreBase {
-  protected listeners: Listener[] = [];
+  protected listeners: Listener<Project>[] = [];
 
-  addListener(listener: Listener) {
+  addListener(listener: Listener<Project>) {
     this.listeners.push(listener);
   }
 }
