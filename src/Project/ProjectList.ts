@@ -1,8 +1,10 @@
 import { ProjectBase } from "./ProjectBase.js";
 import { projectState } from "../store.js";
+import { Project } from "./Project.js";
+import { ProjectItem } from "./ProjectItem.js";
 
 export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> {
-  assignedProjects: any[];
+  assignedProjects: Project[];
 
   constructor(private type: "active" | "finished") {
     super("project-list", "app", false, `${type}-projects`);
@@ -20,9 +22,7 @@ export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> {
     const listItem = document.getElementById(`${this.type}-project-list`)! as HTMLUListElement;
     listItem.innerHTML = "";
     for (const prjItem of this.assignedProjects) {
-      const item = document.createElement("li");
-      item.textContent = prjItem.title;
-      listItem.append(item);
+      new ProjectItem(this.element.querySelector("ul")!.id, prjItem);
     }
   }
 
