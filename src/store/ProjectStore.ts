@@ -1,14 +1,6 @@
-import { Listener } from "./types.js";
-import { Project } from "./Project/Project.js";
-import { ProjectStatus } from "./enums.js";
-
-class StoreBase {
-  protected listeners: Listener<Project>[] = [];
-
-  addListener(listener: Listener<Project>) {
-    this.listeners.push(listener);
-  }
-}
+import { ProjectStatus } from "../enums.js";
+import { Project } from "../Project/Project.js";
+import { StoreBase } from "./StoreBase.js";
 
 export class ProjetStore extends StoreBase {
   private projects: Project[] = [];

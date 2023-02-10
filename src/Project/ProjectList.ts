@@ -1,5 +1,5 @@
 import { ProjectBase } from "./ProjectBase.js";
-import { projectState } from "../store.js";
+import { projectState } from "../store/ProjectStore.js";
 import { Project } from "./Project.js";
 import { ProjectItem } from "./ProjectItem.js";
 

@@ -1,7 +1,7 @@
 import { ProjectBase } from "./ProjectBase.js";
 import { Autobind } from "../decorators.js";
 import { validate } from "../utils.js";
-import { projectState } from "../store.js";
+import { projectState } from "../store/ProjectStore.js";
 
 export class ProjectInput extends ProjectBase<HTMLDivElement, HTMLFormElement> {
   titleInputElement: HTMLInputElement;
