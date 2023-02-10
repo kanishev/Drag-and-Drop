@@ -15,7 +15,7 @@ export class ProjetStore extends StoreBase {
   private static instance: ProjetStore;
 
   addProject(title: string, description: string, people: number) {
-    const project = new Project(Math.random.toString(), title, description, people, ProjectStatus.Active);
+    const project = new Project(Math.random().toString(), title, description, people, ProjectStatus.Active);
     this.projects.push(project);
 
     for (const listener of this.listeners) {

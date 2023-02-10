@@ -10,7 +10,7 @@ export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> {
     super("project-list", "app", false, `${type}-projects`);
     this.assignedProjects = [];
 
-    projectState.addListener((projects: any[]) => {
+    projectState.addListener((projects: Project[]) => {
       this.assignedProjects = projects.filter((project) => project.status == this.type);
       this.renderProjects();
     });
