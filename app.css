@@ -125,3 +125,10 @@ button:active {
   border: 1px solid #ff0062;
   background: #f7f7f7;
 }
+
+#user-input,
+#active-projects,
+#finished-projects {
+  width: 500px;
+  margin: auto;
+}
