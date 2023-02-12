@@ -37,7 +37,7 @@ export class ProjectInput extends ProjectBase<HTMLDivElement, HTMLFormElement> {
     const peopleCountConfig = {
       value: peopleCount,
       required: true,
-      min: 5,
+      min: 1,
       max: 10,
     };
 
