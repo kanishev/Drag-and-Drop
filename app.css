@@ -7,7 +7,11 @@ html {
 }
 
 body {
+  display: flex;
   margin: 0;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 label,
@@ -53,6 +57,12 @@ button:hover,
 button:active {
   background: #a80041;
   border-color: #a80041;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .projects {
