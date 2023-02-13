@@ -6,3 +6,8 @@ export interface Validatable {
   min?: number;
   max?: number;
 }
+
+export interface Draggable {
+  dragStartHandler(event: DragEvent): void;
+  dragStopHandler(event: DragEvent): void;
+}

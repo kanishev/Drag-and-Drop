@@ -1,13 +1,16 @@
 import { Project } from "./Project.js";
 import { ProjectBase } from "./ProjectBase.js";
+import { Draggable } from "../interfaces.js";
+import { Autobind } from "../decorators.js";
 
-export class ProjectItem extends ProjectBase<HTMLUListElement, HTMLLIElement> {
+export class ProjectItem extends ProjectBase<HTMLUListElement, HTMLLIElement> implements Draggable {
   project: Project;
 
   constructor(hostId: string, project: Project) {
     super("single-project", hostId, true, project.id);
     this.project = project;
 
+    this.configure();
     this.renderProjects();
   }
 
@@ -15,7 +18,21 @@ export class ProjectItem extends ProjectBase<HTMLUListElement, HTMLLIElement> {
     return this.project.people > 1 ? `${this.project.people} persons` : "1 person";
   }
 
-  configure(): void {}
+  @Autobind
+  dragStartHandler(event: DragEvent): void {
+    console.log("drag start", event);
+  }
+
+  @Autobind
+  dragStopHandler(event: DragEvent) {
+    console.log("drag stop", event);
+  }
+
+  configure(): void {
+    console.log("this", this.element);
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragStopHandler);
+  }
 
   renderProjects() {
     this.element.querySelector("h2")!.innerHTML = this.project.title;
