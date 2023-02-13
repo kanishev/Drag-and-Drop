@@ -30,8 +30,11 @@ export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> implem
 
   @Autobind
   dragOverHandler(event: DragEvent): void {
-    const listElement = this.element.querySelector("ul")!;
-    listElement.classList.add("droppable");
+    if (event.dataTransfer && event.dataTransfer.types[0] == "text/plain") {
+      event.preventDefault();
+      const listElement = this.element.querySelector("ul")!;
+      listElement.classList.add("droppable");
+    }
   }
 
   @Autobind
@@ -41,7 +44,9 @@ export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> implem
   }
 
   @Autobind
-  dropHandler(event: DragEvent): void {}
+  dropHandler(event: DragEvent): void {
+    console.log("Drop stop");
+  }
 
   configure() {
     this.element.addEventListener("dragover", this.dragOverHandler);
