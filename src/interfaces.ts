@@ -11,3 +11,9 @@ export interface Draggable {
   dragStartHandler(event: DragEvent): void;
   dragStopHandler(event: DragEvent): void;
 }
+
+export interface DroppableTarget {
+  dragOverHandler(event: DragEvent): void;
+  dragLeaveHandler(event: DragEvent): void;
+  dropHandler(event: DragEvent): void;
+}

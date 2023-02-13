@@ -2,8 +2,10 @@ import { ProjectBase } from "./ProjectBase.js";
 import { projectState } from "../store/ProjectStore.js";
 import { Project } from "./Project.js";
 import { ProjectItem } from "./ProjectItem.js";
+import { DroppableTarget } from "../interfaces.js";
+import { Autobind } from "../decorators.js";
 
-export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> {
+export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> implements DroppableTarget {
   assignedProjects: Project[];
 
   constructor(private type: "active" | "finished") {
@@ -26,7 +28,26 @@ export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> {
     }
   }
 
+  @Autobind
+  dragOverHandler(event: DragEvent): void {
+    const listElement = this.element.querySelector("ul")!;
+    listElement.classList.add("droppable");
+  }
+
+  @Autobind
+  dragLeaveHandler(event: DragEvent): void {
+    const listElement = this.element.querySelector("ul")!;
+    listElement.classList.remove("droppable");
+  }
+
+  @Autobind
+  dropHandler(event: DragEvent): void {}
+
   configure() {
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHandler);
+    this.element.addEventListener("drop", this.dropHandler);
+
     const listId = `${this.type}-project-list`;
     this.element.querySelector("ul")!.id = listId;
     this.element.querySelector("h2")!.textContent = this.type.toUpperCase() + " PROJECTS";
