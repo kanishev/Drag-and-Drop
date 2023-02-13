@@ -4,6 +4,7 @@ import { Project } from "./Project.js";
 import { ProjectItem } from "./ProjectItem.js";
 import { DroppableTarget } from "../interfaces.js";
 import { Autobind } from "../decorators.js";
+import { ProjectStatus } from "../enums.js";
 
 export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> implements DroppableTarget {
   assignedProjects: Project[];
@@ -32,20 +33,24 @@ export class ProjectList extends ProjectBase<HTMLDivElement, HTMLElement> implem
   dragOverHandler(event: DragEvent): void {
     if (event.dataTransfer && event.dataTransfer.types[0] == "text/plain") {
       event.preventDefault();
-      const listElement = this.element.querySelector("ul")!;
-      listElement.classList.add("droppable");
+      const list = this.element.querySelector("ul")!;
+      list.classList.add("droppable");
     }
   }
 
   @Autobind
-  dragLeaveHandler(event: DragEvent): void {
-    const listElement = this.element.querySelector("ul")!;
-    listElement.classList.remove("droppable");
+  dragLeaveHandler(_: DragEvent): void {
+    const list = this.element.querySelector("ul")!;
+    list.classList.remove("droppable");
   }
 
   @Autobind
   dropHandler(event: DragEvent): void {
-    console.log("Drop stop");
+    const list = this.element.querySelector("ul")!;
+    const id = event.dataTransfer!.getData("text/plain");
+
+    projectState.changeProjectStatus(id, this.type == "active" ? ProjectStatus.Active : ProjectStatus.Finished);
+    list.classList.remove("droppable");
   }
 
   configure() {

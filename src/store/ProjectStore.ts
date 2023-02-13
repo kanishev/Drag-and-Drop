@@ -9,10 +9,7 @@ export class ProjetStore extends StoreBase {
   addProject(title: string, description: string, people: number) {
     const project = new Project(Math.random().toString(), title, description, people, ProjectStatus.Active);
     this.projects.push(project);
-
-    for (const listener of this.listeners) {
-      listener(this.projects.slice());
-    }
+    this.runListeners();
   }
 
   static getInstance() {
@@ -21,6 +18,20 @@ export class ProjetStore extends StoreBase {
     }
     this.instance = new ProjetStore();
     return this.instance;
+  }
+
+  private runListeners() {
+    for (const listener of this.listeners) {
+      listener(this.projects.slice());
+    }
+  }
+
+  changeProjectStatus(id: string, newStatus: ProjectStatus) {
+    const project = this.projects.find((p) => p.id == id);
+    if (project) {
+      project.status = newStatus;
+      this.runListeners();
+    }
   }
 }
 

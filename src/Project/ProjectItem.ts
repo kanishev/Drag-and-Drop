@@ -30,7 +30,6 @@ export class ProjectItem extends ProjectBase<HTMLUListElement, HTMLLIElement> im
   }
 
   configure(): void {
-    console.log("this", this.element);
     this.element.addEventListener("dragstart", this.dragStartHandler);
     this.element.addEventListener("dragend", this.dragStopHandler);
   }
