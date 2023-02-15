@@ -122,6 +122,10 @@ button:active {
   margin: 0;
 }
 
+.project-item {
+  pointer-events: none;
+}
+
 .droppable {
   background: #ffe3ee;
 }
